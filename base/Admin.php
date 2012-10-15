@@ -83,7 +83,7 @@ class Admin extends DataBoundObject {
 	}
 
 	public function markForDeletion() {
-		$result = Database::query("SELECT count(username) as cnt FROM AT_ADMIN");
+		$result = Database::query("SELECT count(username) as cnt FROM SOM_ADMIN");
 		$row = $result->fetch();
 		if($row['cnt'] > 1) 
 			parent::markForDeletion();
@@ -92,7 +92,7 @@ class Admin extends DataBoundObject {
 	}
 
 	public static function AllAdmins() {
-		$result = Database::query("SELECT * FROM AT_ADMIN");
+		$result = Database::query("SELECT * FROM SOM_ADMIN");
 		$ans = array();
 		for($row = $result->fetch();$row;$row = $result->fetch())
 		{
