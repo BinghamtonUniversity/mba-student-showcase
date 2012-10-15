@@ -16,8 +16,12 @@ An online showcase for resumes of current MBA students.
 2. CRUD for areas of expertise (Accounting, Finance, etc.)
 3. CRUD for student profiles (profile consists of name, email, description, photo, PDF resume - allow uploading of photos and resumes)
 4. Assign each student profile to one or more areas of expertise
+5. Change the open letter
 
 ## Technical Implementation
 
 1. Project built in PHP/MySQL
 2. Project will exist under the http://www.binghamton.edu/som/ website
+
+### Other suff
+1. Change the permission of the base/SOM_letter.html and base/SOM_letter_title.html so that services/editPost.php can modify it
