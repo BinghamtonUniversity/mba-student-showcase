@@ -187,9 +187,9 @@ tr.data:hover small {color: #5b5b5b;}
 }
 #leftBar ul {list-style: none;padding: 0; margin: 0;font-size: 13px;}
 #leftBar ul li {
-	width: 164px;
+	width: 169px;
 	background: url(img/icon-left.png) no-repeat left center, url(img/green.jpg) repeat left center;
-	padding: 10px 0 10px 10px; margin-top: 8px;margin-left: 9px;
+	padding: 10px 0 10px 5px; margin-top: 8px;margin-left: 9px;
 	border: 1px solid #dcdcdc;
 	-moz-border-radius-topleft: 8px;-moz-border-radius-bottomleft: 8px;
 	-webkit-border-top-left-radius: 8px;-webkit-border-bottom-left-radius: 8px;

@@ -1,6 +1,6 @@
 <?php
 require_once 'DataBoundObject.php';
-require_once 'include_top.php'
+require_once 'include_top.php';
 /**
  * 
  * This class helps us to do operations with Admin Table
@@ -78,7 +78,7 @@ class Student extends DataBoundObject {
 
 	public function setName($name) {
 		$name = trim($name);
-		if(strlen($name) > 1 and strlen($name) <= 999)
+		if(strlen($name) > 1 && strlen($name) <= 999)
 			parent::setName($name);
 		else
 			throw new Exception("Name can be between 2 and 999 charecters only", 1);
@@ -86,8 +86,8 @@ class Student extends DataBoundObject {
 
 	public function setDescription($desc) {
 		$desc = trim($desc);
-		if(strlen($desc) > 1 and strlen($desc) <= 999)
-			parent::setName($desc);
+		if(strlen($desc) > 1 && strlen($desc) <= 999)
+			parent::setDescription($desc);
 		else
 			throw new Exception("Description can be between 2 and 999 charecters only", 2);
 	}
@@ -97,6 +97,30 @@ class Student extends DataBoundObject {
 		if($sta != self::STATUS_PUBLISHED && $sta != self::STATUS_NOT_PUBLISHED)
 			throw new Exception ("Wrong status");
 		parent::setStatus($sta);
+	}
+
+	public static function checkResumeValidity($resume) {
+		if($resume['type'] == "application/pdf" || $resume['type'] == "text/pdf") {
+			return true;
+		}
+		return false;
+	}
+
+	public static function ALlStudents($sort = false) {
+		$query = "SELECT * FROM SOM_STUDENT";
+		if($sort) $query .=" ORDER BY NAME ASC ";
+
+		$result = Database::query($query);
+
+		$ans = array();
+		for($row = $result->fetch();$row;$row = $result->fetch())
+		{
+			$e = new Student();
+			$e->populateData($row);
+			$ans[] = $e;
+		}
+		
+		return $ans;
 	}
 }
 ?>
