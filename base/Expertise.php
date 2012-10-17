@@ -7,9 +7,8 @@ require_once 'include_top.php';
  * @author Adarsha
  */
 
-class StudentExpertise extends DataBoundObject {
+class Expertise extends DataBoundObject {
 
-	protected $SID;
 	protected $Tag;
 
 	public function __construct(array $idVals = array()) {
@@ -33,7 +32,7 @@ class StudentExpertise extends DataBoundObject {
 	 * @see DataBoundObject::DefineTableName()
 	 */
 	protected function DefineTableName() {
-		return 'SOM_STUDENT_EXPERTISE';
+		return 'SOM_EXPERTISE';
 	}
 	
 	/**
@@ -43,7 +42,6 @@ class StudentExpertise extends DataBoundObject {
 	protected function DefineRelationMap() {
 	
 	return array(
-			"SID" => "SID",
 			"TAG" => "Tag"
 		);
 	}
@@ -56,41 +54,26 @@ class StudentExpertise extends DataBoundObject {
 		return array('TAG');
 	}
 
-	public function insert() {
-		try{
-			new StudentExpertise(array($this->getSID(),$this->getTag));
-			throw new Exception("Duplicate Entry in tag/suid", 1);
-			
-		}
-		catch (Exception $e) {
-			//ok not a duplicate
-			parent::insert();
-		}
-
-	}
-
-	public function setSID($id) {
-		try {
-			new Student(array($id));
-			parent::setSID($id);
-		}
-		catch(Exception $e) {
-			throw new Exception("Wrong user ID!", 2);
-		}
-	}
-
 	public function setTag($tag) {
 		$tag = trim($tag);
 		if(strlen($tag) > 0 && strlen($tag) <= 255)
 			parent::setTag($tag);
 		else
-			throw new Exception("Tag name too long.", 3);
+			throw new Exception("Tag should be between 1 and 255 charecters", 1);
 			
 	}
 
-	public static function deleteExpertise($tag) {
-		$query = "DELETE FROM SOM_STUDENT_EXPERTISE WHERE TAG = ?";
-		return Database::query($query,$tag);
+	public static function AllTags() {
+		$result = Database::query("SELECT * FROM SOM_EXPERTISE");
+		$ans = array();
+		for($row = $result->fetch();$row;$row = $result->fetch())
+		{
+			$e = new Expertise();
+			$e->populateData($row);				
+			$ans[] = $e;
+		}
+		
+		return $ans;
 	}
 }
 ?>
