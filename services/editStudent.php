@@ -5,30 +5,21 @@ if(!isset($_SESSION['admin'])) {
 	exit;
 }	
 $error = null;
-
-if(isset($_POST['user']) && isset ($_POST['desc']) && isset ($_FILES['resume']) && isset($_POST['status'])) {
+var_dump($_POST);
+if(isset($_POST['user']) && isset ($_POST['desc']) && isset($_POST['status']) && isset($_POST['uid'])) {
 	$name = trim($_POST['user']);
 	$desc = trim($_POST['desc']);
-	$resume = $_FILES['resume'];
 	try {
 		
-		$stud = new Student();
+		$stud = new Student(array(intval($_POST['uid'])));
 		$stud->setName($name);
 		$stud->setDescription($desc);
-		if(isset($_POST['url']) && strlen(trim($_POST['url'])) > 0 ) {
+		if(isset($_POST['url'])) {
 			$stud->setURL(trim($_POST['url']));
 		}
 		$stud->setStatus(intval($_POST['status']));
-		Student::checkResumeValidity($resume);
-		$stud->insert();
-		try {
-			$stud->updateResumeInfo($resume,"../");
-		}
-		catch(Exception $e) {
-			$stud->markForDeletion();
-			throw $e;
-			
-		}
+		
+		$stud->save();
 		//success
 		header('Location: ../student.php');
 		exit;
@@ -40,6 +31,9 @@ if(isset($_POST['user']) && isset ($_POST['desc']) && isset ($_FILES['resume']) 
 else {
 	$error = "Some data has not reached us.";
 }
-echo $error;
-header ("Location: ../addStudent.php?error=".urlencode($error));
+//echo $error;
+if(isset($_POST['uid']))
+header ("Location: ../editStudent.php?id=".$_POST['uid']."&error=".urlencode($error));
+else
+header ("Location: ../student.php?error=".urlencode($error));
 ?>

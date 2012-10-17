@@ -13,7 +13,18 @@ if(isset($_GET['user'])) {
 		$admin = new Student(array($usrId));
 		$admin->markForDeletion();
 		$admin = null; //destroy object
-		header("Location: ../student.php");;
+		if(unlink("../resume-pdfs/".$usrId.".pdf") !== true)
+			throw new Exception("Error deleting the file! You may have to delete it manually at resume-pdfs/".$usrId.".pdf", 1);
+		try {
+			$tmp = new ResumeInfo(array($usrId));
+			$tmp->markForDeletion();
+		}
+		catch (Exception $e) {
+			//ignore as row not found
+			echo $e->getMessage();
+			exit;
+		}
+		header("Location: ../student.php");
 		exit;
 	}
 	catch(Exception $e) {

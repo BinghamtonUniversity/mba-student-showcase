@@ -1,6 +1,6 @@
 <?php
 require_once 'DataBoundObject.php';
-require_once 'include_top.php'
+require_once 'include_top.php';
 /**
  * 
  * This class helps us to do operations with Admin Table
@@ -53,12 +53,13 @@ class ResumeInfo extends DataBoundObject {
 	 * @see DataBoundObject::DefineID()
 	 */
 	protected function DefineID() {
-		return null;
+		return array('SID');
 	}
 
-	public function setSID($id) {
+	public function setSID($id,$skip = false) {
 		try {
-			new Student(array($id));
+			if(!$skip) //if we should skip the check or not
+				new Student(array($id));
 			parent::setSID($id);
 		}
 		catch(Exception $e) {

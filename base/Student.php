@@ -9,19 +9,29 @@ require_once 'include_top.php';
 
 class Student extends DataBoundObject {
 
-	protected $UserID;
-	protected $Name;
-	protected $Description;
-	protected $URL;
-	protected $Status;
+	protected $UserID = null;
+	protected $Name = null;
+	protected $Description = null;
+	protected $URL = null;
+	protected $Status = null;
 
 	//protected $Expertises = array();
 
 	const STATUS_PUBLISHED = 1;
 	const STATUS_NOT_PUBLISHED = 0;
+
+	protected $ResumeInfoObj = null;
 	
 	public function __construct(array $idVals = array()) {
 		parent::__construct($idVals);
+		if($this->UserID !== null) {
+			try {
+				$this->ResumeInfoObj = new ResumeInfo(array($this->UserID));
+			}
+			catch(Exception $e) {
+				//no resume found for this user.. no problem
+			}
+		}
 	}
 
 	function __destruct() {
@@ -99,9 +109,74 @@ class Student extends DataBoundObject {
 		parent::setStatus($sta);
 	}
 
+	private function setResumeInfoObj($filePath) {
+		throw new Exception("cant set it explicitly", 1);
+		
+	}
+
+	public function getResumeInfoObj() {
+		if( $this->ResumeInfoObj !== null )
+			return parent::getResumeInfoObj();
+		else {
+			//will throw an error if unable to load
+			$this->ResumeInfoObj = new ResumeInfo(array($this->UserID));
+			return parent::getResumeInfoObj();
+		}
+	}
+
+	public function updateResumeInfo($uploadedFile ,$relativePath = "") {
+
+		if($this->UserID === null)
+			throw new Exception("Cant call it directly without data association with an user id", 1);
+			
+		$filePath = $relativePath."resume-pdfs/".$this->getUserID().".pdf";
+		//if(file_exists($filePath))
+		//	unlink($filePath);
+		if(move_uploaded_file($uploadedFile['tmp_name'], $filePath) !== true) {
+			throw new Exception("Couldnt move the resume to the destination directory. $filePath Resume not updated", 1);
+		}
+		try {
+
+			include_once 'pdf2text.php';
+
+			try {
+				//does an entry already exist?
+				$tmp = new ResumeInfo(array($this->UserID));
+				//yes if it continues!
+				$tmp->setData(pdf2text($filePath));
+				$tmp->setSID($this->UserID,true);
+				$tmp->save();
+			}
+			catch(Exception $e) {
+				echo "<br/>here<br/>";
+				$tmp = new ResumeInfo();
+				$tmp->setData(pdf2text($filePath));
+				$tmp->setSID($this->UserID,true);
+				$tmp->insert();
+			}
+		}
+		catch(Exception $e) {
+			//silently fail all errors as we donot know every thing about php's pdf to text conversion
+			$this->ResumeInfoObj = null;
+			return;
+		}
+
+		//continued without errors :)
+		$this->ResumeInfoObj = $tmp;
+	}
+
 	public static function checkResumeValidity($resume) {
-		if($resume['type'] == "application/pdf" || $resume['type'] == "text/pdf") {
-			return true;
+		if($resume['error'] !== UPLOAD_ERR_OK )
+			throw new Exception("Error in uploading resume", 1);
+			
+
+		if(!($resume['type'] == "application/pdf" || $resume['type'] == "text/pdf")) {
+			throw new Exception("Wrong type of input file");
+		}
+
+		if($resume['size'] == 0 || $resume['size'] > (52428800)) { // 50MB 
+			throw new Exception("File size must be maximum of 50MB", 1);
+			
 		}
 		return false;
 	}

@@ -355,7 +355,7 @@ abstract class DataBoundObject {
 				return ($this->GetAccessor ( $strMethodMember ));
 				break;
 			default :
-				throw new Exception ( "Non existent method call dude!" );
+				throw new Exception ( "Non existent method $strFunction call dude!" );
 		}
 		return false;
 	}
@@ -376,7 +376,7 @@ abstract class DataBoundObject {
 			}
 			$this->arModifiedRelations [$strMember] = true;
 		} else {
-			throw new Exception ( "Property name doesnt exist!" );
+			throw new Exception ( "Property $strMember doesnt exist!" );
 		}
 	
 	}
@@ -397,7 +397,7 @@ abstract class DataBoundObject {
 			eval ( '$strRetVal = $this->' . $strMember . ';' );
 			return $strRetVal;
 		} else {
-			throw new Exception ( "Property name doesnt exist!" );
+			throw new Exception ( "Property $strMember doesnt exist!" );
 		}
 	}
 }
