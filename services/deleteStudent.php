@@ -30,7 +30,6 @@ if(isset($_GET['user'])) {
 		if(unlink("../resume-pdfs/".$usrId.".pdf") !== true)
 			throw new Exception("Error deleting the file! You may have to delete it manually at resume-pdfs/".$usrId.".pdf", 1);
 
-		
 		header("Location: ../student.php");
 		exit;
 	}

@@ -6,7 +6,7 @@ if(!isset($_SESSION['admin'])) {
 }	
 $error = null;
 
-if(isset($_POST['user']) && isset ($_POST['desc']) && isset ($_FILES['resume']) && isset($_POST['status'])) {
+if(isset($_POST['user']) && isset ($_POST['desc']) && isset ($_FILES['resume']) && isset($_POST['status']) && isset ($_POST['email'])) {
 	$name = trim($_POST['user']);
 	$desc = trim($_POST['desc']);
 	$resume = $_FILES['resume'];
@@ -15,6 +15,7 @@ if(isset($_POST['user']) && isset ($_POST['desc']) && isset ($_FILES['resume']) 
 		$stud = new Student();
 		$stud->setName($name);
 		$stud->setDescription($desc);
+		$stud->setEmail($_POST['email']);
 		if(isset($_POST['url']) && strlen(trim($_POST['url'])) > 0 ) {
 			$stud->setURL(trim($_POST['url']));
 		}

@@ -45,6 +45,10 @@ catch(Exception $e) {
 	
 	<label>Link to web-resume</label>
 	<input name="url" id="url" type="text" class="login" value="<?=$stud->getURL()?>"><br>
+
+	<label>Email</label>
+	<input name="email" id="email" type="text" class="login" value="<?=$stud->getEmail()?>"><br>
+
 	<select name="status">
   		<option <?php if($stud->getStatus() == Student::STATUS_NOT_PUBLISHED) { ?> selected="selected" <?php } ?> value="<?=Student::STATUS_NOT_PUBLISHED?>">Draft</option>
   		<option <?php if($stud->getStatus() == Student::STATUS_PUBLISHED) { ?> selected="selected" <?php } ?> value="<?=Student::STATUS_PUBLISHED?>">Publish</option>

@@ -35,6 +35,8 @@ if(!isset($_SESSION['admin'])) {
 	<input type="file" name="resume" id="resume" /> <br>
 	<label>Link to web-resume</label>
 	<input name="url" id="url" type="text" class="login" value="<?php if(isset($_GET['url'])) echo $_GET['url']; ?>"><br>
+	<label>Email</label>
+	<input name="email" id="email" type="text" class="login" value="<?php if(isset($_GET['email'])) echo $_GET['email']; ?>"><br>
 
 	<select name="status">
   		<option selected="selected" value="<?=Student::STATUS_NOT_PUBLISHED?>">Draft</option>

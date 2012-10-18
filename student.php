@@ -26,7 +26,7 @@ if(!isset($_SESSION['admin'])) {
 			<table class="data">
 				<tr class="data">
 					<th class="data" width="30px">Del</th>
-					<th class="data">Username</th>
+					<th class="data">Username<br>(Email)</th>
 					<th class="data">Description</th>
 					<th class="data">Status</th>
 					<th class="data" width="30px">PDF</th>
@@ -36,7 +36,7 @@ if(!isset($_SESSION['admin'])) {
 							?>
 				<tr class="data">
 					<td class="data" width="30px"><a href="services/deleteStudent.php?user=<?=urlencode($a->getUserID())?>">X</a></td>
-					<td class="data"><a href="editStudent.php?id=<?=$a->getUserID()?>"><?=$a->getName();?></a></td>
+					<td class="data"><a href="editStudent.php?id=<?=$a->getUserID()?>"><?=$a->getName();?></a><br><?=$a->getEmail()?></td>
 					<td class="data"><?=$a->getDescription();?>
 							<?php
 							if($a->getURL() != "") {

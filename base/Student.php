@@ -14,6 +14,7 @@ class Student extends DataBoundObject {
 	protected $Description = null;
 	protected $URL = null;
 	protected $Status = null;
+	protected $Email = null;
 
 	//protected $Expertises = array();
 
@@ -65,7 +66,8 @@ class Student extends DataBoundObject {
 			"NAME" => "Name",
 			"DESCRIPTION" => "Description",
 			"RESUME_URL" => "URL",
-			"STATUS" => "Status"
+			"STATUS" => "Status",
+			"EMAIL" => "Email"
 		);
 	}
 	
@@ -92,6 +94,14 @@ class Student extends DataBoundObject {
 			parent::setName($name);
 		else
 			throw new Exception("Name can be between 2 and 999 charecters only", 1);
+	}
+
+	public function setEmail($email) {
+		$email = trim($email);
+		if(strlen($email) > 1 && strlen($email) <= 999 && preg_match("/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/", $email))
+			parent::setEmail($email);
+		else
+			throw new Exception("Email should be in the right format and can be between 2 and 999 charecters", 1);
 	}
 
 	public function setDescription($desc) {
