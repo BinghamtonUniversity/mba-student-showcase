@@ -60,7 +60,6 @@ class Expertise extends DataBoundObject {
 			parent::setTag($tag);
 		else
 			throw new Exception("Tag should be between 1 and 255 charecters", 1);
-			
 	}
 
 	public static function AllTags() {

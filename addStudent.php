@@ -35,9 +35,19 @@ if(!isset($_SESSION['admin'])) {
 	<input type="file" name="resume" id="resume" /> <br>
 	<label>Link to web-resume</label>
 	<input name="url" id="url" type="text" class="login" value="<?php if(isset($_GET['url'])) echo $_GET['url']; ?>"><br>
+
 	<select name="status">
   		<option selected="selected" value="<?=Student::STATUS_NOT_PUBLISHED?>">Draft</option>
   		<option value="<?=Student::STATUS_PUBLISHED?>">Publish</option>
+	</select><br>
+
+	<label>Student Tags</label><br>
+	<select name="tags[]" id="tags[]" multiple="multiple">
+		<?php
+		foreach (Expertise::AllTags() as $key => $value) {
+			echo '<option value="'.$value->getTag().'">'.$value->getTag().'</option>';
+		}
+  		?>
 	</select><br>
 	<input type="submit" class="button" value="Add Student" />
 	</form>

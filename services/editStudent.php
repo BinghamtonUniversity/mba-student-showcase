@@ -20,6 +20,23 @@ if(isset($_POST['user']) && isset ($_POST['desc']) && isset($_POST['status']) &&
 		$stud->setStatus(intval($_POST['status']));
 		
 		$stud->save();
+
+
+		if(isset($_POST['tags'])) { 
+			try {
+
+				StudentExpertise::deleteExpertiseForSid($stud->getUserID());
+
+				if(is_array($_POST['tags']))
+					StudentExpertise::setExpertises($stud->getUserID(),$_POST['tags']);
+				else
+					StudentExpertise::setExpertises($stud->getUserID(),array($_POST['tags']));
+			}
+			catch(Exception $e) {
+				throw $e;
+			}
+		}
+
 		//success
 		header('Location: ../student.php');
 		exit;

@@ -27,8 +27,31 @@ if(isset($_POST['user']) && isset ($_POST['desc']) && isset ($_FILES['resume']) 
 		catch(Exception $e) {
 			$stud->markForDeletion();
 			throw $e;
-			
 		}
+
+		if(isset($_POST['tags'])) { 
+			try {
+				if(is_array($_POST['tags']))
+					StudentExpertise::setExpertises($stud->getUserID(),$_POST['tags']);
+				else
+					StudentExpertise::setExpertises($stud->getUserID(),array($_POST['tags']));
+			}
+			catch(Exception $e) {
+				//clean up the mess left
+				try {
+					$tmp = new ResumeInfo(array($stud->getUserID()));
+					$tmp->markForDeletion();
+				}
+				catch(Exception $e) {
+					//this means that there was no entry into the resume so ignore it
+				}
+				
+				$stud->markForDeletion();
+				throw $e;
+			}
+
+		}
+//exit;
 		//success
 		header('Location: ../student.php');
 		exit;

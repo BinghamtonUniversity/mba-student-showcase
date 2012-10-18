@@ -274,7 +274,8 @@ abstract class DataBoundObject {
 				eval ( '$this->' . $this->arRelationMap[$clause ['field']] . ' = $this->ID[$key][\'value\'];' );
 				break;
 			} else {
-				eval ( '$this->ID[$key][\'value\'] = $this->' . $clause ['field'] . ';' );
+				//echo '$this->ID[$key][\'value\'] = $this->' . $this->arRelationMap[$clause ['field']] . ';';
+				eval ( '$this->ID[$key][\'value\'] = $this->' . $this->arRelationMap[$clause ['field']] . ';' );
 			}
 		}
 		$this->Load ();

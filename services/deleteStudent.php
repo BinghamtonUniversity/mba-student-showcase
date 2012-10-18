@@ -11,19 +11,26 @@ if(isset($_GET['user'])) {
 	$usrId = intval($_GET['user']);
 	try {
 		$admin = new Student(array($usrId));
-		$admin->markForDeletion();
-		$admin = null; //destroy object
-		if(unlink("../resume-pdfs/".$usrId.".pdf") !== true)
-			throw new Exception("Error deleting the file! You may have to delete it manually at resume-pdfs/".$usrId.".pdf", 1);
+		
+		
 		try {
 			$tmp = new ResumeInfo(array($usrId));
 			$tmp->markForDeletion();
 		}
 		catch (Exception $e) {
 			//ignore as row not found
-			echo $e->getMessage();
-			exit;
+			//echo $e->getMessage();
+			//exit;
 		}
+
+		StudentExpertise::deleteExpertiseForSid($usrId);
+
+		$admin->markForDeletion(); // but obj not destroyed till we end
+
+		if(unlink("../resume-pdfs/".$usrId.".pdf") !== true)
+			throw new Exception("Error deleting the file! You may have to delete it manually at resume-pdfs/".$usrId.".pdf", 1);
+
+		
 		header("Location: ../student.php");
 		exit;
 	}

@@ -148,7 +148,7 @@ class Student extends DataBoundObject {
 				$tmp->save();
 			}
 			catch(Exception $e) {
-				echo "<br/>here<br/>";
+				//echo "<br/>here<br/>";
 				$tmp = new ResumeInfo();
 				$tmp->setData(pdf2text($filePath));
 				$tmp->setSID($this->UserID,true);
@@ -194,7 +194,6 @@ class Student extends DataBoundObject {
 			$e->populateData($row);
 			$ans[] = $e;
 		}
-		
 		return $ans;
 	}
 }

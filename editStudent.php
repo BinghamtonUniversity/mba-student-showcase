@@ -49,6 +49,24 @@ catch(Exception $e) {
   		<option <?php if($stud->getStatus() == Student::STATUS_NOT_PUBLISHED) { ?> selected="selected" <?php } ?> value="<?=Student::STATUS_NOT_PUBLISHED?>">Draft</option>
   		<option <?php if($stud->getStatus() == Student::STATUS_PUBLISHED) { ?> selected="selected" <?php } ?> value="<?=Student::STATUS_PUBLISHED?>">Publish</option>
 	</select><br>
+
+	<label>Student Tags</label><br>
+	<select name="tags[]" id="tags[]" multiple="multiple">
+		<?php
+		$expertises = StudentExpertise::getExpertises($stud->getUserID());
+		foreach (Expertise::AllTags() as $key => $value) {
+			$selected = null;
+			foreach ($expertises as $exp) {
+				if($exp->getTag() == $value->getTag()) {
+					$selected = " selected=\"selected\" ";
+					break;
+				}
+			}
+			echo '<option '.$selected.' value="'.$value->getTag().'">'.$value->getTag().'</option>';
+		}
+  		?>
+	</select><br>
+
 	<input type="hidden" name="uid" id="uid" value="<?=$stud->getUserID()?>">
 	<input type="submit" class="button" value="Edit Student" />
 	</form>
